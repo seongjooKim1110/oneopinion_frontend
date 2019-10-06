@@ -1,19 +1,38 @@
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import React, { useEffect, useState } from "react";
+import { Text, View, AsyncStorage } from "react-native";
+import { ThemeProvider } from "styled-components";
+import { AppLoading } from "expo";
+import styles from "./styles";
+import NavController from "./components/NavController";
+import { AuthProvider } from "./AuthContext";
 
 export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-    </View>
+  const [loaded, setLoaded] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(null);
+  const preLoad = async () => {
+    try {
+      AsyncStorage.clear();
+      const isLoggedIn = await AsyncStorage.getItem("isLoggedIn");
+      if (isLoggedIn === null || isLoggedIn === "false") {
+        setIsLoggedIn(false);
+      } else {
+        setIsLoggedIn(true);
+      }
+      setLoaded(true);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+  useEffect(() => {
+    preLoad();
+  }, []);
+  return loaded ? (
+    <ThemeProvider theme={styles}>
+      <AuthProvider isLoggedIn={isLoggedIn}>
+        <NavController />
+      </AuthProvider>
+    </ThemeProvider>
+  ) : (
+    <AppLoading />
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
