@@ -8,9 +8,10 @@ import constans from "../constans";
 import Icons from "../components/Icon";
 import Home from "../screens/Home/Home";
 import Mypage from "../screens/Mypage/Mypage";
+import Survey from "../screens/Survey";
 
 const Title = styled.Text`
-  font-size: 30px;
+  font-size: 25px;
 `;
 
 const Header = styled.View`
@@ -31,38 +32,72 @@ const BtnText = styled.Text`
   font-size: 16px;
 `;
 
-const MainNavigation = createDrawerNavigator(
-  {
-    Home: {
-      screen: createStackNavigator({
-        Home: {
-          screen: Home,
-          navigationOptions: ({ navigation }) => ({
-            title: "Home screen",
-            header: (
-              <Header>
-                <View>
-                  <TouchableOpacity onPress={navigation.toggleDrawer}>
-                    <Icons name="menu" size="rz" />
-                  </TouchableOpacity>
-                </View>
-                <View style={{ justifyContent: "center" }}>
-                  <Title>의견한줌</Title>
-                </View>
-                <View style={{ alignItems: "flex-end" }}>
-                  <Button>
-                    <BtnText>설문하기</BtnText>
-                  </Button>
-                </View>
-              </Header>
-            ),
-          }),
-        },
+const toSurvey = ({ navigation }) => {
+  console.log(navigation);
+};
+
+const NavFactory = (initialRoute, title, customConfig) =>
+  createStackNavigator({
+    initialRoute: {
+      screen: initialRoute,
+      navigationOptions: ({ navigation }) => ({
+        title: title,
+        header: (
+          <Header>
+            <View>
+              <TouchableOpacity onPress={navigation.toggleDrawer}>
+                <Icons name="menu" size="rz" />
+              </TouchableOpacity>
+            </View>
+            <View style={{ justifyContent: "center", alignItems: "center" }}>
+              <Title>{title}</Title>
+            </View>
+            <View style={{ alignItems: "flex-end" }}>
+              <Button>
+                <BtnText
+                  onPress={function() {
+                    navigation.navigate("Survey");
+                  }}
+                >
+                  설문하기
+                </BtnText>
+              </Button>
+            </View>
+          </Header>
+        ),
       }),
     },
-    Mypage,
+    Survey,
+  });
+
+const MainNavigation = createDrawerNavigator({
+  All: {
+    screen: NavFactory(Home, "전체글보기"),
+    navigationOptions: ({ navigation }) => ({
+      drawerLabel: "전체글보기",
+    }),
   },
-  {},
-);
+  Poli: {
+    screen: NavFactory(Home, "정치/경제"),
+    navigationOptions: ({ navigation }) => ({
+      drawerLabel: "정치/경제",
+    }),
+  },
+  Telent: {
+    screen: NavFactory(Home, "연애"),
+    navigationOptions: ({ navigation }) => ({
+      drawerLabel: "연애",
+    }),
+  },
+  Study: {
+    screen: NavFactory(Home, "학업/진로"),
+    navigationOptions: ({ navigation }) => ({
+      drawerLabel: "학업/진로",
+    }),
+  },
+  Mypage: {
+    screen: NavFactory(Mypage, "마이페이지"),
+  },
+});
 
 export default AppContainer = createAppContainer(MainNavigation);
