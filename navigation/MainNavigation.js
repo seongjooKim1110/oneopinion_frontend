@@ -80,7 +80,7 @@ const MainNavigation = createDrawerNavigator({
   Poli: {
     screen: NavFactory(Home, "정치/경제"),
     navigationOptions: ({ navigation }) => ({
-      drawerLabel: "정치/경제",
+      drawerLabel: <Title>회장</Title>,
     }),
   },
   Telent: {
