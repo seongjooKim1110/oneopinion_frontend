@@ -1,6 +1,5 @@
 import React from "react";
 import styled from "styled-components";
-import { Text } from "react-native";
 import { useIsLoggedIn, useLogIn, useLogOut } from "../AuthContext";
 import AuthHome from "../screens/Auth/AuthHome";
 import MainNavigation from "../navigation/MainNavigation";

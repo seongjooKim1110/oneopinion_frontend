@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Text, View, AsyncStorage } from "react-native";
+import { AsyncStorage, StatusBar } from "react-native";
 import { ThemeProvider } from "styled-components";
 import { AppLoading } from "expo";
 import styles from "./styles";
@@ -11,7 +11,7 @@ export default function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(null);
   const preLoad = async () => {
     try {
-      AsyncStorage.clear();
+      // AsyncStorage.clear();
       const isLoggedIn = await AsyncStorage.getItem("isLoggedIn");
       if (isLoggedIn === null || isLoggedIn === "false") {
         setIsLoggedIn(false);
