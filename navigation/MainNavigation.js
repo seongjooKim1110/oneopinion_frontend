@@ -1,15 +1,19 @@
 import React from "react";
-import styled from "styled-components";
-import { TouchableOpacity, StatusBar } from "react-native";
 import { createAppContainer } from "react-navigation";
 import { createDrawerNavigator } from "react-navigation-drawer";
 import { createStackNavigator } from "react-navigation-stack";
-import constans from "../constans";
+import styled from "styled-components";
+import { TouchableOpacity, StatusBar, Text } from "react-native";
 import Icons from "../components/Icon";
-import Home from "../screens/Home/Home";
+import Home from "../screens/Category/Home";
+import Culture from "../screens/Category/Culture";
+import Politics from "../screens/Category/Politics";
+import Study from "../screens/Category/Study";
+import Talent from "../screens/Category/Talent";
 import Mypage from "../screens/Mypage/Mypage";
 import Survey from "../screens/Survey";
 import Constants from "expo-constants";
+import SideMenu from "../components/SideMenu";
 
 const Title = styled.Text`
   font-size: 25px;
@@ -79,34 +83,29 @@ const NavFactory = (initialRoute, title, customConfig) =>
     Survey,
   });
 
-const MainNavigation = createDrawerNavigator({
-  Mypage: {
-    screen: NavFactory(Mypage, "마이페이지"),
+const MainNavigation = createDrawerNavigator(
+  {
+    Mypage: {
+      screen: NavFactory(Mypage, "마이페이지"),
+    },
+    Home: {
+      screen: NavFactory(Home, "전체글보기"),
+    },
+    Politics: {
+      screen: NavFactory(Politics, "정치/경제"),
+    },
+    Talent: {
+      screen: NavFactory(Talent, "연애"),
+    },
+    Study: {
+      screen: NavFactory(Study, "학업/진로"),
+    },
+    Culture: {
+      screen: NavFactory(Culture, "문화"),
+    },
   },
-  All: {
-    screen: NavFactory(Home, "전체글보기"),
-    navigationOptions: ({ navigation }) => ({
-      drawerLabel: "전체글보기",
-    }),
+  {
+    contentComponent: props => SideMenu(props),
   },
-  Poli: {
-    screen: NavFactory(Home, "정치/경제"),
-    navigationOptions: ({ navigation }) => ({
-      drawerLabel: <Title>회장</Title>,
-    }),
-  },
-  Telent: {
-    screen: NavFactory(Home, "연애"),
-    navigationOptions: ({ navigation }) => ({
-      drawerLabel: "연애",
-    }),
-  },
-  Study: {
-    screen: NavFactory(Home, "학업/진로"),
-    navigationOptions: ({ navigation }) => ({
-      drawerLabel: "학업/진로",
-    }),
-  },
-});
-
+);
 export default AppContainer = createAppContainer(MainNavigation);

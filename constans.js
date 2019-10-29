@@ -1,5 +1,12 @@
 import { Dimensions } from "react-native";
 
-export const { width, height } = Dimensions.get("screen");
+const constans = () => {
+  const { width, height } = Dimensions.get("screen");
+  console.log(width, height);
+  const max = Math.max(width, height);
+  const min = Math.min(width, height);
 
-export default { width, height };
+  return { width, height, max, min };
+};
+
+export default constans();
