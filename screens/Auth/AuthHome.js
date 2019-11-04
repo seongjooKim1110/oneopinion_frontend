@@ -26,17 +26,10 @@ export default () => {
   const [logInTool, setLogInTool] = useState(null);
   const logIn = useLogIn();
   const pressNaver = () => {
-    setLogInTool("naver");
     logIn("1234");
   };
-  const pressGoogle = () => {
-    setLogInTool("google");
-    logIn("1234");
-  };
-  const pressFacebook = () => {
-    setLogInTool("facebook");
-    logIn("1234");
-  };
+  const pressGoogle = async () => {};
+  const pressFacebook = () => {};
   return (
     <Wrapper>
       <TextWrapper>
