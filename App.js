@@ -6,6 +6,14 @@ import styles from "./styles";
 import NavController from "./components/NavController";
 import { AuthProvider } from "./AuthContext";
 
+//firebase moduel
+import * as firebase from "firebase";
+
+// Initialize Firebase
+import { firebaseConfig } from "./config";
+firebase.initializeApp(firebaseConfig);
+
+
 export default function App() {
   const [loaded, setLoaded] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(null);
