@@ -1,18 +1,17 @@
 import React from "react";
 import styled from "styled-components";
-
-const View = styled.View`
-  flex: 1;
-  justify-content: center;
-  align-items: center;
-`;
+import Header from "./Header";
+import { View } from "react-native";
 
 const Text = styled.Text``;
 
 const Culture = ({ navigation }) => {
   return (
     <View>
-      <Text>Cultere</Text>
+      <Header navigation={navigation} title={"Culture"} />
+      <View style={{}}>
+        <Text>Culture</Text>
+      </View>
     </View>
   );
 };

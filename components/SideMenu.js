@@ -51,7 +51,7 @@ function SideMenu({ navigation }) {
         <Avatar
           source={{
             uri:
-              "https://us.123rf.com/450wm/bee32/bee321509/bee32150900030/44673539-유기-토양에서-씨앗에서-자라는-녹색-새싹.jpg?ver=6",
+              "https://us.123rf.com/450wm/bee32/bee321509/bee32150900030/44673539-유기-토양에서-씨앗에서-자라는-녹색-새싹.jpg?ver=6"
           }}
         />
         <Point>300P</Point>
@@ -60,49 +60,46 @@ function SideMenu({ navigation }) {
         <Entypo name="dot-single" size={50} color="white" />
         <Cate> 카테고리 </Cate>
       </FlexWrapper>
-      <SubWrapper onPress={() => navigation.navigate("Home")}>
+      <SubWrapper
+        onPress={() => {
+          navigation.navigate("Home");
+          navigation.toggleDrawer();
+        }}
+      >
         <Sub>- 전체글 보기</Sub>
       </SubWrapper>
-      <SubWrapper onPress={() => navigation.navigate("Culture")}>
+      <SubWrapper
+        onPress={() => {
+          navigation.navigate("Culture");
+          navigation.toggleDrawer();
+        }}
+      >
         <Sub>- 문화</Sub>
       </SubWrapper>
-      <SubWrapper onPress={() => navigation.navigate("Politics")}>
+      <SubWrapper
+        onPress={() => {
+          navigation.navigate("Politics");
+          navigation.toggleDrawer();
+        }}
+      >
         <Sub>- 정치/경제</Sub>
       </SubWrapper>
-      <SubWrapper onPress={() => navigation.navigate("Talent")}>
+      <SubWrapper
+        onPress={() => {
+          navigation.navigate("Talent");
+          navigation.toggleDrawer();
+        }}
+      >
         <Sub>- 연예</Sub>
       </SubWrapper>
-      <SubWrapper onPress={() => navigation.navigate("Study")}>
+      <SubWrapper
+        onPress={() => {
+          navigation.navigate("Study");
+          navigation.toggleDrawer();
+        }}
+      >
         <Sub>- 학업/진로</Sub>
       </SubWrapper>
-
-      {/* Mypage: {
-      screen: NavFactory(Mypage, "마이페이지"),
-    },
-    All: {
-      screen: NavFactory(Home, "전체글보기"),
-      navigationOptions: ({ navigation }) => ({
-        drawerLabel: "전체글보기",
-      }),
-    },
-    Poli: {
-      screen: NavFactory(Home, "정치/경제"),
-      navigationOptions: ({ navigation }) => ({
-        drawerLabel: <Title>회장</Title>,
-      }),
-    },
-    Telent: {
-      screen: NavFactory(Home, "연애"),
-      navigationOptions: ({ navigation }) => ({
-        drawerLabel: "연애",
-      }),
-    },
-    Study: {
-      screen: NavFactory(Home, "학업/진로"),
-      navigationOptions: ({ navigation }) => ({
-        drawerLabel: "학업/진로",
-      }),
-    }, */}
     </Wrapper>
   );
 }
