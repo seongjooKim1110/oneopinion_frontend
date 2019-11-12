@@ -27,7 +27,7 @@ const WithOutNotch = styled.View`
   align-items: center;
 `;
 const Header = styled.View`
-  flex: 1;
+  height: 65px;
 `;
 const View = styled.View`
   flex: 1;

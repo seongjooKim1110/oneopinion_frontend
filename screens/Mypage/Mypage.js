@@ -4,6 +4,12 @@ import styled from "styled-components";
 import constans from "../../constans";
 import Modal from "../../components/Modal";
 
+const View = styled.View`
+  flex: 1;
+  justify-content: center;
+  align-items: center;
+`;
+
 const HeaderView = styled.View`
   flex: 1;
   justify-content: center;
@@ -29,11 +35,7 @@ const InfoView = styled.View`
 const BodyView = styled.View`
   flex: 2;
 `;
-const View = styled.View`
-  flex: 1;
-  justify-content: center;
-  align-items: center;
-`;
+
 const Text = styled.Text``;
 
 const Mypage = ({ navigation }) => {
