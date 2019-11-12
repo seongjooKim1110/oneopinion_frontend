@@ -1,111 +1,79 @@
 import React from "react";
 import { createAppContainer } from "react-navigation";
 import { createDrawerNavigator } from "react-navigation-drawer";
-import { createStackNavigator } from "react-navigation-stack";
-import styled from "styled-components";
-import { TouchableOpacity, StatusBar, Text } from "react-native";
-import Icons from "../components/Icon";
+import { createBottomTabNavigator } from "react-navigation-tabs";
 import Home from "../screens/Category/Home";
 import Culture from "../screens/Category/Culture";
 import Politics from "../screens/Category/Politics";
 import Study from "../screens/Category/Study";
 import Talent from "../screens/Category/Talent";
+import SideMenu from "../components/SideMenu";
 import Mypage from "../screens/Mypage/Mypage";
 import Survey from "../screens/Survey";
-import Constants from "expo-constants";
-import SideMenu from "../components/SideMenu";
+import PointShop from "../screens/PointShop";
+import Icons from "../components/Icon";
 
-const Title = styled.Text`
-  font-size: 25px;
-`;
-const Notch = styled.View`
-  height: ${Constants.statusBarHeight}px;
-  background-color: white;
-`;
-const WithOutNotch = styled.View`
-  flex-direction: row;
-  align-items: center;
-`;
-const Header = styled.View`
-  height: 65px;
-`;
-const View = styled.View`
-  flex: 1;
-`;
-const Button = styled.TouchableOpacity`
-  width: 70px;
-  height: 32px;
-  border: 1px solid black;
-  border-radius: 5px;
-  padding: 5px;
-`;
-const BtnText = styled.Text`
-  font-size: 16px;
-`;
-
-const NavFactory = (initialRoute, title, customConfig) =>
-  createStackNavigator({
-    initialRoute: {
-      screen: initialRoute,
-      navigationOptions: ({ navigation }) => ({
-        title: title,
-        header: (
-          <Header>
-            <Notch />
-            <WithOutNotch>
-              <View>
-                <TouchableOpacity
-                  style={{ paddingLeft: 10 }}
-                  onPress={navigation.toggleDrawer}
-                >
-                  <Icons name="menu" size="rz" />
-                </TouchableOpacity>
-              </View>
-              <View style={{ justifyContent: "center", alignItems: "center" }}>
-                <Title>{title}</Title>
-              </View>
-              <View style={{ alignItems: "flex-end" }}>
-                <Button>
-                  <BtnText
-                    onPress={function() {
-                      navigation.navigate("Survey");
-                    }}
-                  >
-                    설문하기
-                  </BtnText>
-                </Button>
-              </View>
-            </WithOutNotch>
-          </Header>
-        ),
-      }),
+const NavFactory = initialRoute =>
+  createBottomTabNavigator(
+    {
+      initialRoute: {
+        screen: initialRoute,
+        navigationOptions: {
+          tabBarIcon: ({ focused }) => <Icons name="home" focused={focused} />
+        }
+      },
+      Mypage: {
+        screen: Mypage,
+        navigationOptions: {
+          tabBarIcon: ({ focused }) => <Icons name="person" focused={focused} />
+        }
+      },
+      Survey: {
+        screen: Survey,
+        navigationOptions: {
+          tabBarIcon: ({ focused }) => (
+            <Icons name="add-circle" focused={focused} />
+          )
+        }
+      },
+      PointShop: {
+        screen: PointShop,
+        navigationOptions: {
+          tabBarIcon: ({ focused }) => <Icons name="cash" focused={focused} />
+        }
+      }
     },
-    Survey,
-  });
+    {
+      tabBarOptions: {
+        showLabel: false,
+        style: {
+          backgroundColor: "#C4C4C4"
+        }
+      }
+    }
+  );
 
-const MainNavigation = createDrawerNavigator(
+const DrawNavigation = createDrawerNavigator(
   {
-    Mypage: {
-      screen: NavFactory(Mypage, "마이페이지"),
-    },
     Home: {
-      screen: NavFactory(Home, "전체글보기"),
+      screen: NavFactory(Home)
     },
     Politics: {
-      screen: NavFactory(Politics, "정치/경제"),
+      screen: NavFactory(Politics)
     },
     Talent: {
-      screen: NavFactory(Talent, "연애"),
+      screen: NavFactory(Talent)
     },
     Study: {
-      screen: NavFactory(Study, "학업/진로"),
+      screen: NavFactory(Study)
     },
     Culture: {
-      screen: NavFactory(Culture, "문화"),
-    },
+      screen: NavFactory(Culture)
+    }
   },
   {
-    contentComponent: props => SideMenu(props),
-  },
+    contentComponent: props => SideMenu(props)
+  }
 );
-export default AppContainer = createAppContainer(MainNavigation);
+
+export default AppContainer = createAppContainer(DrawNavigation);
