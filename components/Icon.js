@@ -20,7 +20,6 @@ const Icons = ({ name, size = "md", color = "black", focused = false }) => {
   } else {
     iconSize = 40;
   }
-  console.log(`${os}-${name}`);
   return <Ionicons name={`${os}-${name}`} size={iconSize} color={color} />;
 };
 
