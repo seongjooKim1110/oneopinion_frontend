@@ -9,13 +9,22 @@ import Study from "../screens/Category/Study";
 import Talent from "../screens/Category/Talent";
 import SideMenu from "../components/SideMenu";
 import Mypage from "../screens/Mypage/Mypage";
-import Survey from "../screens/Survey";
+import Survey from "../screens/Survey/Survey";
 import PointShop from "../screens/PointShop";
 import Icons from "../components/Icon";
 
 const NavFactory = initialRoute =>
   createBottomTabNavigator(
     {
+      Survey: {
+        screen: Survey,
+        navigationOptions: {
+          tabBarIcon: ({ focused }) => (
+            <Icons name="add-circle" focused={focused} />
+          ),
+          tabBarVisible: false
+        }
+      },
       initialRoute: {
         screen: initialRoute,
         navigationOptions: {
@@ -28,14 +37,7 @@ const NavFactory = initialRoute =>
           tabBarIcon: ({ focused }) => <Icons name="person" focused={focused} />
         }
       },
-      Survey: {
-        screen: Survey,
-        navigationOptions: {
-          tabBarIcon: ({ focused }) => (
-            <Icons name="add-circle" focused={focused} />
-          )
-        }
-      },
+
       PointShop: {
         screen: PointShop,
         navigationOptions: {
