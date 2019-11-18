@@ -1,17 +1,17 @@
 import React from "react";
 import styled from "styled-components";
-const View = styled.View`
-  flex: 1;
-  justify-content: center;
-  align-items: center;
-`;
+import Header from "./Header";
+import { View } from "react-native";
 
 const Text = styled.Text``;
 
 const Politics = ({ navigation }) => {
   return (
     <View>
-      <Text>Politics</Text>
+      <Header navigation={navigation} title={"Politics"} />
+      <View style={{}}>
+        <Text>Politics</Text>
+      </View>
     </View>
   );
 };

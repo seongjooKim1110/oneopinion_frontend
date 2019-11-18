@@ -2,7 +2,10 @@ import React from "react";
 import { Ionicons } from "@expo/vector-icons";
 import { Platform } from "@unimodules/core";
 
-const Icons = ({ name, size = "md", color = "black" }) => {
+const Icons = ({ name, size = "md", color = "black", focused = false }) => {
+  if (focused) {
+    color = "white";
+  }
   let os = "";
   let iconSize = 0;
   if (Platform.OS === "ios") {

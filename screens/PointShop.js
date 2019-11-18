@@ -9,12 +9,12 @@ const View = styled.View`
 
 const Text = styled.Text``;
 
-const Survey = () => {
+const PointShop = () => {
   return (
     <View>
-      <Text>Survey</Text>
+      <Text>PointShop</Text>
     </View>
   );
 };
 
-export default Survey;
+export default PointShop;

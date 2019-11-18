@@ -7,7 +7,6 @@ import NavController from "./components/NavController";
 import { AuthProvider } from "./AuthContext";
 
 
-
 export default function App() {
   const [loaded, setLoaded] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(null);
@@ -30,7 +29,7 @@ export default function App() {
   }, []);
   return loaded ? (
     <ThemeProvider theme={styles}>
-      <AuthProvider isLoggedIn={isLoggedIn}>
+      <AuthProvider isLoggedIn={!isLoggedIn}>
         <NavController />
       </AuthProvider>
     </ThemeProvider>
