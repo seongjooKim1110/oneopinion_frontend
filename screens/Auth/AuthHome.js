@@ -5,7 +5,18 @@ import { useLogIn } from "../../AuthContext";
 
 import * as Google from 'expo-google-app-auth';
 
-import firebase from 'firebase';
+//firebase moduel
+import * as firebase from "firebase";
+import 'firebase/firestore'
+// Initialize Firebase
+import { firebaseConfig } from "../../config";
+firebase.initializeApp(firebaseConfig);
+
+let db = firebase.firestore();
+let docRef = db.collection('users').doc('sj');
+
+
+
 const Wrapper = styled.View`
   flex: 1;
   background-color: rgba(87, 66, 46, 0.5);
@@ -32,9 +43,11 @@ const isUserEqual = (googleUser, firebaseUser) => {
       if (providerData[i].providerId === firebase.auth.GoogleAuthProvider.PROVIDER_ID &&
           providerData[i].uid === googleUser.getBasicProfile().getId()) {
         // We don't need to reauth the Firebase connection.
+        console.log("user already signed in "); 
         return true;
       }
     }
+  
   }
   return false;
 }
@@ -51,10 +64,18 @@ const onSignIn = googleUser => {
           googleUser.idToken,
           googleUser.accessToken
           );
-     
+      
+
+
+
       firebase.auth().signInWithCredential(credential)
       .then(function(){
         console.log('user signed in');
+        var user = firebase.auth().currentUser;
+        let setTest = docRef.set({
+          'name': user.displayName, 
+          'email': user.email 
+        });
       })
       .catch(function(error) {
        
