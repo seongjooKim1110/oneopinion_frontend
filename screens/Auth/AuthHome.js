@@ -54,19 +54,18 @@ const isUserEqual = (googleUser, firebaseUser) => {
 
 const onSignIn = googleUser => {
   console.log('Google Auth Response', googleUser);
- 
-  var unsubscribe = firebase.auth().onAuthStateChanged(function(firebaseUser) {
-    unsubscribe();
-   
+  
+  
+  var firebaseUser = firebase.auth().currentUser;
+
+
     if (!isUserEqual(googleUser, firebaseUser)) {
-     
+      
       var credential = firebase.auth.GoogleAuthProvider.credential(
           googleUser.idToken,
           googleUser.accessToken
           );
-      
-
-
+    
 
       firebase.auth().signInWithCredential(credential)
       .then(function(){
@@ -90,7 +89,7 @@ const onSignIn = googleUser => {
     } else {
       console.log('User already signed-in Firebase.');
     }
-  });
+
 }
 
 

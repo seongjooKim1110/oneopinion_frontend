@@ -29,7 +29,7 @@ export default function App() {
   }, []);
   return loaded ? (
     <ThemeProvider theme={styles}>
-      <AuthProvider isLoggedIn={!isLoggedIn}>
+      <AuthProvider isLoggedIn={isLoggedIn}>
         <NavController />
       </AuthProvider>
     </ThemeProvider>
