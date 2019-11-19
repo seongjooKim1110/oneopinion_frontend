@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
+import axios from "axios";
 import AuthButton from "../../components/AuthButton";
 import { useLogIn } from "../../AuthContext";
 
-import * as Google from 'expo-google-app-auth';
+import * as Google from "expo-google-app-auth";
 
 //firebase moduel
 import * as firebase from "firebase";
@@ -14,6 +15,7 @@ firebase.initializeApp(firebaseConfig);
 
 let db = firebase.firestore();
 let docRef = db.collection('users').doc('sj');
+
 
 
 
@@ -36,6 +38,7 @@ const LogInText = styled.Text`
   font-size: 40px;
   font-weight: 700;
 `;
+<<<<<<< HEAD
 const isUserEqual = (googleUser, firebaseUser) => {
   if (firebaseUser) {
     var providerData = firebaseUser.providerData;
@@ -46,10 +49,41 @@ const isUserEqual = (googleUser, firebaseUser) => {
         console.log("user already signed in "); 
         return true;
       }
+=======
+
+const onSignIn = async googleUser => {
+  let isUserEqual;
+  console.log("Google Auth Response");
+  try {
+    isUserEqual = await axios.post(
+      "https://hidden-stream-28896.herokuapp.com/login",
+      googleUser
+    );
+  } catch (error) {
+    console.log(error);
+    return false;
+  }
+  if (!isUserEqual.data.token) {
+    try {
+      const credential = firebase.auth.GoogleAuthProvider.credential(
+        googleUser.idToken,
+        googleUser.accessToken
+      );
+      await firebase.auth().signInWithCredential(credential);
+      return true;
+    } catch (error) {
+      console.log(error);
+      var errorCode = error.code;
+      var errorMessage = error.message;
+      var email = error.email;
+      var credential = error.credential;
+      return false;
+>>>>>>> 3dc404b1c5d84c5a636c42d7e9a5eef00636abc9
     }
   
   }
   return false;
+<<<<<<< HEAD
 }
 
 const onSignIn = googleUser => {
@@ -92,8 +126,11 @@ const onSignIn = googleUser => {
 
 }
 
+=======
+};
+>>>>>>> 3dc404b1c5d84c5a636c42d7e9a5eef00636abc9
 
-export default () => {
+function AuthHome({ navigation }) {
   const [logInTool, setLogInTool] = useState(null);
   const logIn = useLogIn();
   const pressNaver = () => {
@@ -102,15 +139,17 @@ export default () => {
   const pressGoogle = async () => {
     try {
       const result = await Google.logInAsync({
-        androidClientId:"442810321009-hb8j0tud7862iu70rr6eh5f5v5jpsae8.apps.googleusercontent.com",
-    //    iosClientId:"YOUR_iOS_CLIENT_ID",
-        scopes: ['profile', 'email']
-      
+        androidClientId:
+          "442810321009-hb8j0tud7862iu70rr6eh5f5v5jpsae8.apps.googleusercontent.com",
+        //    iosClientId:"YOUR_iOS_CLIENT_ID",
+        scopes: ["profile", "email"]
       });
-  
+
       if (result.type === "success") {
-        onSignIn(result);
-       return result.accessToken;
+        const onSignInResult = await onSignIn(result);
+        console.log(onSignInResult);
+        navigation.navigate("SignIn");
+        return result.accessToken;
       } else {
         return { cancelled: true };
       }
@@ -118,7 +157,6 @@ export default () => {
       console.log("err:", err);
     }
   };
-
 
   const pressFacebook = () => {};
   return (
@@ -138,4 +176,6 @@ export default () => {
       </ButtonWrapper>
     </Wrapper>
   );
-};
+}
+
+export default AuthHome;

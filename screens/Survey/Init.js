@@ -1,10 +1,11 @@
 import React, { useState } from "react";
-import { Modal, TouchableOpacity, CheckBox } from "react-native";
+import { TouchableOpacity, CheckBox, Button } from "react-native";
 import styled from "styled-components";
 import Constants from "expo-constants";
 import constans from "../../constans";
 import useInput from "../../components/hooks/useInput";
 import DatePicker from "../../components/DatePicker";
+import CategoryItem from "../../components/CategoryItem";
 
 const Notch = styled.View`
   height: ${Constants.statusBarHeight}px;
@@ -41,11 +42,6 @@ const CategorysWrapper = styled.View`
   margin-left: ${constans.width * 0.05};
   margin-bottom: 10px;
 `;
-
-const Picker = styled.Picker`
-  width: ${constans.width};
-`;
-
 const DateWrapper = styled.View`
   margin-left: ${constans.width * 0.05};
 `;
@@ -72,7 +68,10 @@ function Init({ navigation, setInit }) {
   const subject = useInput("");
   const describe = useInput("");
   const [category, setCategory] = useState("정치/경제");
-  const [modal, setModal] = useState(false);
+  const categorys = ["정치/경제", "연애", "학업/진로"];
+  const pressCategory = text => {
+    setCategory(text);
+  };
   return (
     <Wrapper>
       <Notch />
@@ -90,31 +89,22 @@ function Init({ navigation, setInit }) {
       </TitleWrapper>
       <CategorysWrapper>
         <H3>카테고리</H3>
-        <TouchableOpacity>
-          <H5>-{category}-</H5>
-        </TouchableOpacity>
-        <Modal visible={modal}>
-          <Picker
-            selectedValue={category}
-            style={{ width: 200, height: 100 }}
-            onValueChange={itemValue => setCategory(itemValue)}
-          >
-            <Picker.Item label="정치/경제" value="정치/경제" />
-            <Picker.Item label="연애" value="연애" />
-            <Picker.Item label="학업/진로" value="학업/진로" />
-          </Picker>
-        </Modal>
+        {categorys.map(el => (
+          <CategoryItem
+            key={el}
+            text={el}
+            select={category}
+            setCategory={pressCategory}
+          />
+        ))}
       </CategorysWrapper>
       <DateWrapper>
         <H3>게시기간</H3>
-        <DatePikerWrapper>
-          <DatePicker />
-        </DatePikerWrapper>
+        <DatePikerWrapper></DatePikerWrapper>
       </DateWrapper>
       <AnonyWrapper>
         <H3>익명여부</H3>
         <FlexWrapper>
-          <CheckBox />
           <H5>익명</H5>
         </FlexWrapper>
       </AnonyWrapper>
