@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
+import axios from "axios";
 import AuthButton from "../../components/AuthButton";
 import { useLogIn } from "../../AuthContext";
 
-import * as Google from 'expo-google-app-auth';
+import * as Google from "expo-google-app-auth";
 
-import firebase from 'firebase';
+import firebase from "firebase";
 const Wrapper = styled.View`
   flex: 1;
   background-color: rgba(87, 66, 46, 0.5);
@@ -25,55 +26,40 @@ const LogInText = styled.Text`
   font-size: 40px;
   font-weight: 700;
 `;
-const isUserEqual = (googleUser, firebaseUser) => {
-  if (firebaseUser) {
-    var providerData = firebaseUser.providerData;
-    for (var i = 0; i < providerData.length; i++) {
-      if (providerData[i].providerId === firebase.auth.GoogleAuthProvider.PROVIDER_ID &&
-          providerData[i].uid === googleUser.getBasicProfile().getId()) {
-        // We don't need to reauth the Firebase connection.
-        return true;
-      }
+
+const onSignIn = async googleUser => {
+  let isUserEqual;
+  console.log("Google Auth Response");
+  try {
+    isUserEqual = await axios.post(
+      "https://hidden-stream-28896.herokuapp.com/login",
+      googleUser
+    );
+  } catch (error) {
+    console.log(error);
+    return false;
+  }
+  if (!isUserEqual.data.token) {
+    try {
+      const credential = firebase.auth.GoogleAuthProvider.credential(
+        googleUser.idToken,
+        googleUser.accessToken
+      );
+      await firebase.auth().signInWithCredential(credential);
+      return true;
+    } catch (error) {
+      console.log(error);
+      var errorCode = error.code;
+      var errorMessage = error.message;
+      var email = error.email;
+      var credential = error.credential;
+      return false;
     }
   }
   return false;
-}
+};
 
-const onSignIn = googleUser => {
-  console.log('Google Auth Response', googleUser);
- 
-  var unsubscribe = firebase.auth().onAuthStateChanged(function(firebaseUser) {
-    unsubscribe();
-   
-    if (!isUserEqual(googleUser, firebaseUser)) {
-     
-      var credential = firebase.auth.GoogleAuthProvider.credential(
-          googleUser.idToken,
-          googleUser.accessToken
-          );
-     
-      firebase.auth().signInWithCredential(credential)
-      .then(function(){
-        console.log('user signed in');
-      })
-      .catch(function(error) {
-       
-        var errorCode = error.code;
-        var errorMessage = error.message;
-        
-        var email = error.email;
-   
-        var credential = error.credential;
-  
-      });
-    } else {
-      console.log('User already signed-in Firebase.');
-    }
-  });
-}
-
-
-export default () => {
+function AuthHome({ navigation }) {
   const [logInTool, setLogInTool] = useState(null);
   const logIn = useLogIn();
   const pressNaver = () => {
@@ -82,15 +68,17 @@ export default () => {
   const pressGoogle = async () => {
     try {
       const result = await Google.logInAsync({
-        androidClientId:"442810321009-hb8j0tud7862iu70rr6eh5f5v5jpsae8.apps.googleusercontent.com",
-    //    iosClientId:"YOUR_iOS_CLIENT_ID",
-        scopes: ['profile', 'email']
-      
+        androidClientId:
+          "442810321009-hb8j0tud7862iu70rr6eh5f5v5jpsae8.apps.googleusercontent.com",
+        //    iosClientId:"YOUR_iOS_CLIENT_ID",
+        scopes: ["profile", "email"]
       });
-  
+
       if (result.type === "success") {
-        onSignIn(result);
-       return result.accessToken;
+        const onSignInResult = await onSignIn(result);
+        console.log(onSignInResult);
+        navigation.navigate("SignIn");
+        return result.accessToken;
       } else {
         return { cancelled: true };
       }
@@ -98,7 +86,6 @@ export default () => {
       console.log("err:", err);
     }
   };
-
 
   const pressFacebook = () => {};
   return (
@@ -118,4 +105,6 @@ export default () => {
       </ButtonWrapper>
     </Wrapper>
   );
-};
+}
+
+export default AuthHome;
