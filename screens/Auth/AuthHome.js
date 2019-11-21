@@ -13,11 +13,7 @@ import 'firebase/firestore'
 import { firebaseConfig } from "../../config";
 firebase.initializeApp(firebaseConfig);
 
-let db = firebase.firestore();
-let docRef = db.collection('users').doc('sj');
-
-
-
+ 
 
 const Wrapper = styled.View`
   flex: 1;
@@ -38,23 +34,11 @@ const LogInText = styled.Text`
   font-size: 40px;
   font-weight: 700;
 `;
-<<<<<<< HEAD
-const isUserEqual = (googleUser, firebaseUser) => {
-  if (firebaseUser) {
-    var providerData = firebaseUser.providerData;
-    for (var i = 0; i < providerData.length; i++) {
-      if (providerData[i].providerId === firebase.auth.GoogleAuthProvider.PROVIDER_ID &&
-          providerData[i].uid === googleUser.getBasicProfile().getId()) {
-        // We don't need to reauth the Firebase connection.
-        console.log("user already signed in "); 
-        return true;
-      }
-=======
 
 const onSignIn = async googleUser => {
-  let isUserEqual;
+  let isUserEqual = false;
   console.log("Google Auth Response");
-  try {
+  /*try {
     isUserEqual = await axios.post(
       "https://hidden-stream-28896.herokuapp.com/login",
       googleUser
@@ -62,63 +46,26 @@ const onSignIn = async googleUser => {
   } catch (error) {
     console.log(error);
     return false;
-  }
-  if (!isUserEqual.data.token) {
-    try {
-      const credential = firebase.auth.GoogleAuthProvider.credential(
-        googleUser.idToken,
-        googleUser.accessToken
-      );
-      await firebase.auth().signInWithCredential(credential);
-      return true;
-    } catch (error) {
-      console.log(error);
-      var errorCode = error.code;
-      var errorMessage = error.message;
-      var email = error.email;
-      var credential = error.credential;
-      return false;
->>>>>>> 3dc404b1c5d84c5a636c42d7e9a5eef00636abc9
-    }
+  }*/
   
-  }
-  return false;
-<<<<<<< HEAD
-}
-
-const onSignIn = googleUser => {
-  console.log('Google Auth Response', googleUser);
-  
-  
-  var firebaseUser = firebase.auth().currentUser;
-
-
-    if (!isUserEqual(googleUser, firebaseUser)) {
-      
+    // Check if we are already signed-in Firebase with the correct user.
+    if (!isUserEqual) {
+      // Build Firebase credential with the Google ID token.
       var credential = firebase.auth.GoogleAuthProvider.credential(
-          googleUser.idToken,
-          googleUser.accessToken
-          );
-    
+         googleUser.idToken,
+         googleUser.accessToken);
 
-      firebase.auth().signInWithCredential(credential)
-      .then(function(){
-        console.log('user signed in');
-        var user = firebase.auth().currentUser;
-        let setTest = docRef.set({
-          'name': user.displayName, 
-          'email': user.email 
-        });
+      firebase.auth().signInWithCredential(credential).then(function(){
+        console.log("user signed in ");
       })
       .catch(function(error) {
-       
+        // Handle Errors here.
         var errorCode = error.code;
         var errorMessage = error.message;
         
         var email = error.email;
-   
+        
         var credential = error.credential;
-  
       });
     } else {
       console.log('User already signed-in Firebase.');
@@ -126,9 +73,7 @@ const onSignIn = googleUser => {
 
 }
 
-=======
-};
->>>>>>> 3dc404b1c5d84c5a636c42d7e9a5eef00636abc9
+
 
 function AuthHome({ navigation }) {
   const [logInTool, setLogInTool] = useState(null);
@@ -139,14 +84,15 @@ function AuthHome({ navigation }) {
   const pressGoogle = async () => {
     try {
       const result = await Google.logInAsync({
+        behavior:'web',
         androidClientId:
-          "442810321009-hb8j0tud7862iu70rr6eh5f5v5jpsae8.apps.googleusercontent.com",
+        "386017314845-7f5fif4n91gp0mb0sdr8a4gqh4ps0l4b.apps.googleusercontent.com",
         //    iosClientId:"YOUR_iOS_CLIENT_ID",
         scopes: ["profile", "email"]
       });
 
       if (result.type === "success") {
-        const onSignInResult = await onSignIn(result);
+        const onSignInResult = onSignIn(result);
         console.log(onSignInResult);
         navigation.navigate("SignIn");
         return result.accessToken;
