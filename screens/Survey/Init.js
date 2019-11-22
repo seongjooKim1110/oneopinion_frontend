@@ -1,5 +1,10 @@
 import React, { useState } from "react";
-import { TouchableWithoutFeedback, Keyboard } from "react-native";
+import {
+  TouchableWithoutFeedback,
+  Keyboard,
+  DatePickerAndroid
+} from "react-native";
+import { Platform } from "@unimodules/core";
 import styled from "styled-components";
 import Constants from "expo-constants";
 import constans from "../../constans";
@@ -83,10 +88,28 @@ function Init({ navigation, setInit }) {
   const describe = useInput("");
   const [category, setCategory] = useState("정치/경제");
   const categorys = ["정치/경제", "연애", "학업/진로"];
+  const [endDate, setEndDate] = useState("");
+  const [isAnony, setIsAnony] = useState(false);
   const pressCategory = text => {
     setCategory(text);
   };
-  const datePopUp = () => {};
+  const datePopUp = async () => {
+    if (Platform.OS === "android") {
+      try {
+        const { action, year, month, day } = await DatePickerAndroid.open({
+          // Use `new Date()` for current date.
+          // May 25 2020. Month 0 is January.
+          date: new Date()
+        });
+        setEndDate(`${year}-${month}-${day}`);
+        if (action !== DatePickerAndroid.dismissedAction) {
+          // Selected year, month (0-11), day
+        }
+      } catch ({ code, message }) {
+        console.warn("Cannot open date picker", message);
+      }
+    }
+  };
   return (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
       <Wrapper>
@@ -119,13 +142,21 @@ function Init({ navigation, setInit }) {
           <DatePikerWrapper>
             <H3>{new Date().toISOString().slice(0, 10)}</H3>
             <H3>~</H3>
-            <DatePicker onPress={datePopUp}></DatePicker>
+            <DatePicker onPress={datePopUp}>
+              <H3>{endDate}</H3>
+            </DatePicker>
           </DatePikerWrapper>
         </DateWrapper>
         <AnonyWrapper>
           <H3>익명여부</H3>
-          <FlexWrapper>
-            <CheckBox />
+          <FlexWrapper
+            onPress={() => {
+              setIsAnony(!isAnony);
+            }}
+          >
+            <CheckBox
+              style={{ backgroundColor: isAnony ? "black" : "white" }}
+            />
             <H5>익명</H5>
           </FlexWrapper>
         </AnonyWrapper>
