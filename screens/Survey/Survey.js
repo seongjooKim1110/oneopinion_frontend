@@ -8,11 +8,9 @@ const View = styled.View`
 
 const Text = styled.Text``;
 
-const Survey = ({ navigation }) => {
-  const [init, setInit] = useState(false);
+const Survey = ({}) => {
   return (
     <View>
-      {!init && <Init />}
       <Text>Survey</Text>
     </View>
   );
