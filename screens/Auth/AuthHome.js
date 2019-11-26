@@ -87,7 +87,7 @@ function AuthHome({ navigation }) {
         behavior:'web',
         androidClientId:
         "386017314845-7f5fif4n91gp0mb0sdr8a4gqh4ps0l4b.apps.googleusercontent.com",
-        //    iosClientId:"YOUR_iOS_CLIENT_ID",
+        iosClientId:"386017314845-5ag5u2gpok9qctdlaifabdfak9aj2ec5.apps.googleusercontent.com",
         scopes: ["profile", "email"]
       });
 
