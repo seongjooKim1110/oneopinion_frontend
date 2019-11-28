@@ -19,11 +19,6 @@
     "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true
-      
-    },
-    "android":{
-      "package":"host.exp.exponent"
-      
     }
   }
 }

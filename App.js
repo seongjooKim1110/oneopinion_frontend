@@ -1,17 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { AsyncStorage, StatusBar } from "react-native";
+import { Text, View, AsyncStorage } from "react-native";
 import { ThemeProvider } from "styled-components";
 import { AppLoading } from "expo";
 import styles from "./styles";
 import NavController from "./components/NavController";
 import { AuthProvider } from "./AuthContext";
-
-//firebase moduel
-import * as firebase from "firebase";
-
-// Initialize Firebase
-import { firebaseConfig } from "./config";
-firebase.initializeApp(firebaseConfig);
 
 export default function App() {
   const [loaded, setLoaded] = useState(false);
@@ -35,7 +28,7 @@ export default function App() {
   }, []);
   return loaded ? (
     <ThemeProvider theme={styles}>
-      <AuthProvider isLoggedIn={!isLoggedIn}>
+      <AuthProvider isLoggedIn={isLoggedIn}>
         <NavController />
       </AuthProvider>
     </ThemeProvider>
