@@ -8,6 +8,23 @@ import SurveyMake from "../screens/Survey/Make";
 import { TouchableOpacity } from "react-native-gesture-handler";
 
 const SurveyNavigation = createStackNavigator({
+  SurveyMake: {
+    screen: SurveyMake,
+    navigationOptions: ({ navigation }) => ({
+      headerLeft: (
+        <TouchableOpacity
+          onPress={() =>
+            Alert.alert("뒤로가시겠습니까?", "작성한 내용이 삭제됩니다.", [
+              { text: "YES", onPress: () => navigation.goBack() },
+              { text: "NO" }
+            ])
+          }
+        >
+          <Text>뒤로가기</Text>
+        </TouchableOpacity>
+      )
+    })
+  },
   SurveyInit: {
     screen: SurveyInit,
     navigationOptions: ({ navigation }) => ({
@@ -15,6 +32,7 @@ const SurveyNavigation = createStackNavigator({
       headerBackTitle: "뒤로가기"
     })
   },
+
   Survey: {
     screen: Survey,
     navigationOptions: ({ navigation }) => ({
@@ -27,23 +45,6 @@ const SurveyNavigation = createStackNavigator({
       headerRight: (
         <TouchableOpacity onPress={() => navigation.navigate("SurveyInit")}>
           <Text>설문조사</Text>
-        </TouchableOpacity>
-      )
-    })
-  },
-  SurveyMake: {
-    screen: SurveyMake,
-    navigationOptions: ({ navigation }) => ({
-      headerLeft: (
-        <TouchableOpacity
-          onPress={() =>
-            Alert.alert("뒤로가시겠습니까?", "작성한 내용이 삭제됩니다.", [
-              { text: "YES", onPress: () => navigation.goBack(null) },
-              { text: "NO" }
-            ])
-          }
-        >
-          <Text>뒤로가기</Text>
         </TouchableOpacity>
       )
     })
