@@ -1,15 +1,11 @@
-import React, { useState } from "react";
-import {
-  TouchableWithoutFeedback,
-  Keyboard,
-  DatePickerAndroid
-} from "react-native";
-import { Platform } from "@unimodules/core";
+import React, { useState, useEffect } from "react";
+import { TouchableWithoutFeedback, Keyboard } from "react-native";
 import styled from "styled-components";
 import Constants from "expo-constants";
 import constans from "../../constans";
 import useInput from "../../components/hooks/useInput";
 import CategoryItem from "../../components/CategoryItem";
+import Calendar from "../../components/Calendar";
 
 const Notch = styled.View`
   height: ${Constants.statusBarHeight}px;
@@ -82,34 +78,63 @@ const CheckBox = styled.View`
   height: 10px;
   border: 1px solid black;
 `;
+const MakeSurvey = styled.View`
+  display: flex;
+  align-items: flex-end;
+`;
+const TouchMake = styled.TouchableOpacity`
+  padding: 5px;
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: 3px;
+`;
 
-function Init({ navigation, setInit }) {
-  const subject = useInput("");
-  const describe = useInput("");
+function Init({ navigation }) {
+  const subject = useInput(null);
+  const describe = useInput(null);
+  const [pop, setPop] = useState(false);
   const [category, setCategory] = useState("정치/경제");
-  const categorys = ["정치/경제", "연애", "학업/진로"];
-  const [endDate, setEndDate] = useState("");
   const [isAnony, setIsAnony] = useState(false);
+  const [isFinish, setIsFinish] = useState(false);
+
+  const now = new Date();
+  const year = now.getFullYear();
+  const month = now.getMonth();
+  const day = now.getDate();
+
+  const [endDate, setEndDate] = useState([year, month, day]);
+  const categorys = ["정치/경제", "연애", "학업/진로"];
+
+  const visualEndDate = `${endDate[0]}-${
+    endDate[1] === 12 ? "01" : endDate[1] + 1
+  }-${endDate[2]}`;
   const pressCategory = text => {
     setCategory(text);
   };
-  const datePopUp = async () => {
-    if (Platform.OS === "android") {
-      try {
-        const { action, year, month, day } = await DatePickerAndroid.open({
-          // Use `new Date()` for current date.
-          // May 25 2020. Month 0 is January.
-          date: new Date()
-        });
-        setEndDate(`${year}-${month}-${day}`);
-        if (action !== DatePickerAndroid.dismissedAction) {
-          // Selected year, month (0-11), day
-        }
-      } catch ({ code, message }) {
-        console.warn("Cannot open date picker", message);
-      }
+
+  function setEndDateValue(date) {
+    setEndDate([date[0], date[1], date[2]]);
+    setPop(false);
+  }
+  function datePopUp() {
+    setPop(true);
+  }
+
+  function pressNext() {
+    const param = {
+      subject: subject.value,
+      describe: describe.value,
+      category,
+      endDate,
+      isAnony
+    };
+    navigation.navigate("SurveyMake", { ...param });
+  }
+  useEffect(() => {
+    if (subject.value !== null && describe.value !== null) {
+      setIsFinish(true);
     }
-  };
+  }, [subject, describe]);
+
   return (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
       <Wrapper>
@@ -143,7 +168,7 @@ function Init({ navigation, setInit }) {
             <H3>{new Date().toISOString().slice(0, 10)}</H3>
             <H3>~</H3>
             <DatePicker onPress={datePopUp}>
-              <H3>{endDate}</H3>
+              <H3>{visualEndDate}</H3>
             </DatePicker>
           </DatePikerWrapper>
         </DateWrapper>
@@ -160,6 +185,16 @@ function Init({ navigation, setInit }) {
             <H5>익명</H5>
           </FlexWrapper>
         </AnonyWrapper>
+        {isFinish && (
+          <MakeSurvey>
+            <TouchMake onPress={pressNext}>
+              <H3>다음</H3>
+            </TouchMake>
+          </MakeSurvey>
+        )}
+        {pop && (
+          <Calendar endDate={endDate} setEndDateValue={setEndDateValue} />
+        )}
       </Wrapper>
     </TouchableWithoutFeedback>
   );
