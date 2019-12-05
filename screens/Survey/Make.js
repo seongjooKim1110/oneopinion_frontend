@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { SafeAreaView, FlatList } from "react-native";
 import styled from "styled-components";
 import constans from "../../constans";
@@ -11,7 +11,13 @@ import {
   Step
 } from "../../components/AddSurvey";
 
-const View = styled.View``;
+const View = styled.View`
+  flex: 1;
+`;
+
+const CheckBoxView = styled.View``;
+
+const TouchableOpacity = styled.TouchableOpacity``;
 
 const AddSurveyBtn = styled.View`
   justify-content: center;
@@ -46,12 +52,23 @@ const KindOfSurveyBox = styled.TouchableOpacity`
   padding: 5px;
 `;
 
+const PositingBtnView = styled.View`
+  width: 55px;
+  height: 29px;
+  background: #dfdcdc;
+  border-radius: 5px;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  justify-content: center;
+  align-items: center;
+  align-self: flex-end;
+  margin: 30px;
+`;
+
 const Text = styled.Text``;
-function Make({ navigation }) {
-  console.log(navigation.getParam("subject"));
+
+function Make({ DATA, navigation }) {
   const [isMakeSurvey, setIsMakeSurvey] = useState(true);
-  const [kindOfSurvey, setKindOfSurvey] = useState([]);
-  const [dataOfSurvey] = useState([]);
+  const [surveyData, setSurveyData] = useState(DATA);
   const data = [
     ["check", "객관식"],
     ["checksquareo", "객관식(복수체크)"],
@@ -59,15 +76,34 @@ function Make({ navigation }) {
     ["grid", "객관식 그리드"],
     ["bars", "주관식"]
   ];
-
   function pressBtn() {
     setIsMakeSurvey(!isMakeSurvey);
   }
   function makeSurvey(e) {
-    const newSurvey = kindOfSurvey.concat(e[0]);
-    dataOfSurvey.push([]);
-    setKindOfSurvey(newSurvey);
+    const survey = {};
+    survey.class = e[0];
+    survey.title = "";
+    survey.answer = [""];
+    if (e[0] === "check") {
+      survey.answer = ["", ""];
+    }
+    survey.isRequire = false;
+    surveyData.push(survey);
+    setSurveyData(surveyData.slice());
   }
+
+  function writeSurvey(index, value, action) {
+    if (action === "WRITE") {
+      surveyData[index] = value;
+    } else if (action === "DELETE") {
+      surveyData.splice(index, 1);
+    }
+    setSurveyData(surveyData.slice());
+  }
+
+  useEffect(() => {
+    navigation.setParams({ data: surveyData });
+  }, [surveyData]);
   return (
     <View>
       <AddSurveyBtn>
@@ -76,14 +112,14 @@ function Make({ navigation }) {
         </AddSurveyBorder>
       </AddSurveyBtn>
       {isMakeSurvey && (
-        <View
+        <CheckBoxView
           style={{
             position: "relative",
             justifyContent: "center",
             alignItems: "center"
           }}
         >
-          {data.map((el, index) => (
+          {data.map(el => (
             <KindOfSurveyBox key={el} onPress={() => makeSurvey(el)}>
               <Icon
                 name={el[0]}
@@ -94,13 +130,29 @@ function Make({ navigation }) {
               <Text style={{ fontSize: 15 }}>{el[1]}</Text>
             </KindOfSurveyBox>
           ))}
-        </View>
+        </CheckBoxView>
       )}
-      {dataOfSurvey.map((el, index) => {
-        if (el === "check") {
-          return <OneChoice />;
-        }
-      })}
+      <FlatList
+        data={surveyData}
+        keyExtractor={(item, index) => `${item.class || "SUBJECT"} ${index}`}
+        style={{ paddingLeft: 10, marginBottom: 10, flex: 1 }}
+        extraData={surveyData.length}
+        renderItem={({ item, index }) => {
+          if (index === 0) {
+            return <Text>{item.class || "제목 : " + item.subject}</Text>;
+          } else {
+            if (item.class === "check") {
+              return (
+                <OneChoice
+                  index={index}
+                  data={surveyData}
+                  writeSurvey={writeSurvey}
+                />
+              );
+            }
+          }
+        }}
+      />
     </View>
   );
 }

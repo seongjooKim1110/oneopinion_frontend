@@ -3,13 +3,12 @@ import { Text, Alert } from "react-native";
 import { createAppContainer } from "react-navigation";
 import { createStackNavigator } from "react-navigation-stack";
 import Survey from "../screens/Survey/Survey";
-import SurveyInit from "../screens/Survey/Init";
-import SurveyMake from "../screens/Survey/Make";
+import SurveyController from "../screens/Survey/Controll";
 import { TouchableOpacity } from "react-native-gesture-handler";
 
 const SurveyNavigation = createStackNavigator({
-  SurveyMake: {
-    screen: SurveyMake,
+  SurveyController: {
+    screen: SurveyController,
     navigationOptions: ({ navigation }) => ({
       headerLeft: (
         <TouchableOpacity
@@ -23,13 +22,6 @@ const SurveyNavigation = createStackNavigator({
           <Text>뒤로가기</Text>
         </TouchableOpacity>
       )
-    })
-  },
-  SurveyInit: {
-    screen: SurveyInit,
-    navigationOptions: ({ navigation }) => ({
-      title: "설문지 기본정보",
-      headerBackTitle: "뒤로가기"
     })
   },
 
