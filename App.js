@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { AsyncStorage, StatusBar } from "react-native";
 import { ThemeProvider } from "styled-components";
 import { AppLoading } from "expo";
+import * as Font from "expo-font";
 import styles from "./styles";
 import NavController from "./components/NavController";
 import { AuthProvider } from "./AuthContext";
@@ -12,6 +13,9 @@ export default function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(null);
   const preLoad = async () => {
     try {
+      await Font.loadAsync({
+        Roboto: require("./assets/Roboto/Roboto-Regular.ttf")
+      });
       AsyncStorage.clear();
       const isLoggedIn = await AsyncStorage.getItem("isLoggedIn");
       if (isLoggedIn === null || isLoggedIn === "false") {

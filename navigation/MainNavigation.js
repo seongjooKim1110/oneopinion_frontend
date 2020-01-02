@@ -8,8 +8,8 @@ import { TouchableOpacity } from "react-native-gesture-handler";
 
 const TestMain = createStackNavigator(
   {
-    SurveyNavigation,
-    DrawerNavigation
+    DrawerNavigation,
+    SurveyNavigation
   },
   {
     headerMode: "none"

@@ -63,6 +63,7 @@ const AnonyWrapper = styled.View``;
 const FlexWrapper = styled.TouchableOpacity`
   display: flex;
   flex-direction: row;
+  width: 50px;
 `;
 const H3 = styled.Text`
   font-size: 20px;
@@ -88,7 +89,7 @@ const TouchMake = styled.TouchableOpacity`
   border-radius: 3px;
 `;
 
-function Init({ navigation }) {
+function Init({ toMake, initData }) {
   const subject = useInput(null);
   const describe = useInput(null);
   const [pop, setPop] = useState(false);
@@ -120,15 +121,20 @@ function Init({ navigation }) {
   }
 
   function pressNext() {
-    const param = {
+    initData.subject = subject.value;
+    initData.describe = describe.value;
+    initData.category = category;
+    initData.endDate = endDate;
+    initData.isAnony = isAnony;
+    toMake({
       subject: subject.value,
       describe: describe.value,
       category,
       endDate,
       isAnony
-    };
-    navigation.navigate("SurveyMake", { ...param });
+    });
   }
+
   useEffect(() => {
     if (subject.value !== null && describe.value !== null) {
       setIsFinish(true);
