@@ -18,12 +18,11 @@
     },
     "assetBundlePatterns": ["**/*"],
     "ios": {
-      "supportsTablet": true
-      
+      "supportsTablet": false,
+      "package": "host.exp.exponent"
     },
-    "android":{
-      "package":"host.exp.exponent"
-      
+    "android": {
+      "package": "host.exp.exponent"
     }
   }
 }

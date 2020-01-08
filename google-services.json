@@ -1,0 +1,38 @@
+{
+  "project_info": {
+    "project_number": "386017314845",
+    "firebase_url": "https://oneopinion-6df14.firebaseio.com",
+    "project_id": "oneopinion-6df14",
+    "storage_bucket": "oneopinion-6df14.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:386017314845:android:bea0e4c5df2dfead135ef4",
+        "android_client_info": {
+          "package_name": "host.exp.exponent"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBTvIpxYStaC_WSugfhaF3DGwWhTYQVEew"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "386017314845-24dah7plh63vhalgk93h3o3p5vrssnb3.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "host.exp.exponent"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -8,12 +8,10 @@ import * as Google from "expo-google-app-auth";
 
 //firebase moduel
 import * as firebase from "firebase";
-import 'firebase/firestore'
+import "firebase/firestore";
 // Initialize Firebase
 import { firebaseConfig } from "../../config";
 firebase.initializeApp(firebaseConfig);
-
- 
 
 const Wrapper = styled.View`
   flex: 1;
@@ -38,42 +36,44 @@ const LogInText = styled.Text`
 const onSignIn = async googleUser => {
   let isUserEqual = false;
   console.log("Google Auth Response");
-  /*try {
+  try {
     isUserEqual = await axios.post(
       "https://hidden-stream-28896.herokuapp.com/login",
       googleUser
     );
+    console.log("is user equal", isUserEqual);
   } catch (error) {
-    console.log(error);
+    console.log("has error", error);
     return false;
-  }*/
-  
-    // Check if we are already signed-in Firebase with the correct user.
-    if (!isUserEqual) {
-      // Build Firebase credential with the Google ID token.
-      var credential = firebase.auth.GoogleAuthProvider.credential(
-         googleUser.idToken,
-         googleUser.accessToken);
+  }
 
-      firebase.auth().signInWithCredential(credential).then(function(){
+  // Check if we are already signed-in Firebase with the correct user.
+  if (!isUserEqual) {
+    // Build Firebase credential with the Google ID token.
+    var credential = firebase.auth.GoogleAuthProvider.credential(
+      googleUser.idToken,
+      googleUser.accessToken
+    );
+
+    firebase
+      .auth()
+      .signInWithCredential(credential)
+      .then(function() {
         console.log("user signed in ");
       })
       .catch(function(error) {
         // Handle Errors here.
         var errorCode = error.code;
         var errorMessage = error.message;
-        
+
         var email = error.email;
-        
+
         var credential = error.credential;
       });
-    } else {
-      console.log('User already signed-in Firebase.');
-    }
-
-}
-
-
+  } else {
+    console.log("User already signed-in Firebase.");
+  }
+};
 
 function AuthHome({ navigation }) {
   const [logInTool, setLogInTool] = useState(null);
@@ -84,10 +84,9 @@ function AuthHome({ navigation }) {
   const pressGoogle = async () => {
     try {
       const result = await Google.logInAsync({
-        behavior:'web',
-        androidClientId:
-        "386017314845-7f5fif4n91gp0mb0sdr8a4gqh4ps0l4b.apps.googleusercontent.com",
-        iosClientId:"386017314845-5ag5u2gpok9qctdlaifabdfak9aj2ec5.apps.googleusercontent.com",
+        iosClientId:
+          "386017314845-24dah7plh63vhalgk93h3o3p5vrssnb3.apps.googleusercontent.com",
+        androidClientId: "1:386017314845:android:bea0e4c5df2dfead135ef4",
         scopes: ["profile", "email"]
       });
 
