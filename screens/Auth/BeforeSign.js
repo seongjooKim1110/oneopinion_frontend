@@ -1,5 +1,6 @@
 import React from "react";
-import { Image, Button } from "react-native";
+import { Button } from "react-native";
+import constans from "../../constans";
 import styled from "styled-components";
 
 const View = styled.View`
@@ -24,7 +25,7 @@ const TopText = styled.Text`
 
 const BottomLayout = styled.View`
   flex: 1;
-  justify-content: center;
+  padding-top: 20px;
   align-items: flex-end;
 `;
 
@@ -37,6 +38,12 @@ const ButtonView = styled.View`
   border-radius: 5px;
   margin-right: 16px;
   color: black;
+`;
+
+const Image = styled.Image`
+  align-self: center;
+  width: ${constans.min * 0.9};
+  height: ${(constans.min * 200 * 0.9) / 324};
 `;
 
 function BeforeSign({ navigation }) {
@@ -55,7 +62,10 @@ function BeforeSign({ navigation }) {
         </TopText>
       </TopLayout>
       <BottomLayout>
-        <Image source={require("../../assets/sur-free.png")} />
+        <Image
+          source={require("../../assets/sur-free.png")}
+          resizeMode="cover"
+        />
         <ButtonView>
           <Button
             title="다음"
