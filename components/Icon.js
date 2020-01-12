@@ -10,6 +10,7 @@ const Icons = ({
   design = "ion",
   style
 }) => {
+  console.log(size);
   if (focused) {
     color = "white";
   }
@@ -20,7 +21,9 @@ const Icons = ({
   } else if (Platform.OS === "android") {
     os = "md";
   }
-  if (size === "sm") {
+  if (typeof size === "number") {
+    iconSize = size;
+  } else if (size === "sm") {
     iconSize = 24;
   } else if (size === "md") {
     iconSize = 32;
@@ -37,7 +40,7 @@ const Icons = ({
       />
     );
   } else if (design === "ant") {
-    return <AntDesign name={name} style={style} />;
+    return <AntDesign name={name} style={style} size={iconSize} />;
   }
 };
 
