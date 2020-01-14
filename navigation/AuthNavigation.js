@@ -6,9 +6,9 @@ import AuthSignIn from "../screens/Auth/AuthSignIn";
 
 const AuthNavigation = createStackNavigator(
   {
-    AuthSignIn,
+    AuthHome,
     BeforeSign,
-    AuthHome
+    AuthSignIn
   },
   {
     headerMode: "none"

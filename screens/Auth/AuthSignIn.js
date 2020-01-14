@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Platform, StatusBar, Keyboard } from "react-native";
 import styled from "styled-components";
 import ModalSelector from "react-native-modal-selector";
-import constans from "../../constans";
+import axios from "axios";
 import useInput from "../../components/hooks/useInput";
 import { cityData, streetData } from "../../DATA";
 import Icon from "../../components/Icon";
@@ -107,6 +107,35 @@ function AuthSignIn() {
   const job = useInput("");
   const [agree, setAgree] = useState(false);
 
+  async function sendData() {
+    if (year.value === "" || month.value === "" || day.value === "") {
+      alert("생년,월,일 을 작성해주세요");
+    } else if (city === "" || street === "") {
+      alert("지역,구 를 입력해주세요");
+    } else if (sex === "") {
+      alert("성별을 입력해주세요");
+    } else if (job.value === "") {
+      alert("직업을 입력해주세요");
+    } else if (agree === false) {
+      alert("약관에 동의해주세요");
+    } else {
+      try {
+      } catch (e) {
+        console.log(e);
+      }
+      console.log(
+        year.value,
+        month.value,
+        day.value,
+        cityData[city].label,
+        streetData[city - 1][street].label,
+        sex,
+        job.value,
+        agree
+      );
+    }
+  }
+
   return (
     <SafeAreaView>
       <View style={{ marginTop: 10 }}>
@@ -133,7 +162,7 @@ function AuthSignIn() {
           <ModalSelector
             data={streetData[city - 1]}
             initValue="구"
-            onChange={option => setStreet(option.label)}
+            onChange={option => setStreet(option.key)}
           />
         )}
       </SubView>
@@ -175,7 +204,12 @@ function AuthSignIn() {
           />
         )}
       </Agree>
-      <SendData style={{ backgroundColor: agree ? "blue" : "#dfdcdc" }}>
+      <SendData
+        style={{ backgroundColor: agree ? "blue" : "#dfdcdc" }}
+        onPress={() => {
+          sendData();
+        }}
+      >
         <Text>회원가입</Text>
       </SendData>
     </SafeAreaView>

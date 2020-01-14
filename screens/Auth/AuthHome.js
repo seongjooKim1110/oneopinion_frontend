@@ -35,10 +35,10 @@ const LogInText = styled.Text`
 
 const onSignIn = async googleUser => {
   let isUserEqual = false;
-  console.log("Google Auth Response");
+  console.log(googleUser);
   try {
     isUserEqual = await axios.post(
-      "https://hidden-stream-28896.herokuapp.com/login",
+      "https://hidden-stream-28896.herokuapp.com/user/login",
       googleUser
     );
     console.log("is user equal", isUserEqual);
@@ -86,12 +86,13 @@ function AuthHome({ navigation }) {
       const result = await Google.logInAsync({
         iosClientId:
           "386017314845-24dah7plh63vhalgk93h3o3p5vrssnb3.apps.googleusercontent.com",
-        androidClientId: "1:386017314845:android:bea0e4c5df2dfead135ef4",
+        androidClientId:
+          "386017314845-v2tkp0rcjgg70tvuqrj2lor2cu5305p0.apps.googleusercontent.com",
         scopes: ["profile", "email"]
       });
 
       if (result.type === "success") {
-        const onSignInResult = onSignIn(result);
+        const onSignInResult = await onSignIn(result);
         console.log(onSignInResult);
         navigation.navigate("SignIn");
         return result.accessToken;
