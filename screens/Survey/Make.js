@@ -47,9 +47,9 @@ const KindOfSurveyBox = styled.TouchableOpacity`
   justify-content: center;
   align-items: center;
   background: #c4c4c4;
-  width: 150px;
+  width: 170px;
   height: 30px;
-  padding: 5px;
+  padding: 0px;
 `;
 
 const PositingBtnView = styled.View`
@@ -124,7 +124,7 @@ function Make({ DATA, navigation }) {
               <Icon
                 name={el[0]}
                 design={el[0] === "grid" ? "ion" : "ant"}
-                size={el[0] === "grid" ? "sm" : "md"}
+                size="sm"
                 style={{ marginRight: 5 }}
               />
               <Text style={{ fontSize: 15 }}>{el[1]}</Text>
