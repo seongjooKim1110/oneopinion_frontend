@@ -23,6 +23,14 @@ class Header extends React.Component {
           endDate: [2019, 11, 3],
           isAnony: false,
           subject: "1"
+        },
+        {
+          answer: ["", ""],
+          class: "checkcircleo",
+          isRequire: false,
+          title: "",
+          start: 1,
+          end: 10
         }
       ]
     };

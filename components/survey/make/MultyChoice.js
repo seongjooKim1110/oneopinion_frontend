@@ -27,7 +27,7 @@ const Squre = styled.View`
   width: 15px;
   height: 15px;
   border: 1px solid black;
-  margin-right: 10px;
+  margin-right: 6px;
 `;
 
 const RequireText = styled.Text``;

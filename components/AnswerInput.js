@@ -6,6 +6,7 @@ const Text = styled.Text``;
 
 const QuestionInput = styled.TextInput`
   padding-left: 5px;
+  width: 80%;
 `;
 
 function AnswerInput({ answerIndex, value, onChange }) {

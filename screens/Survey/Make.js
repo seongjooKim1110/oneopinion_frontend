@@ -84,7 +84,7 @@ function Make({ DATA, navigation }) {
     survey.class = e[0];
     survey.title = "";
     survey.answer = [""];
-    if (e[0] === "check") {
+    if (e[0] === "check" || e[0] === "checksquareo") {
       survey.answer = ["", ""];
     }
     survey.isRequire = false;
@@ -103,7 +103,6 @@ function Make({ DATA, navigation }) {
 
   useEffect(() => {
     navigation.setParams({ data: surveyData });
-    console.log(surveyData);
   }, [surveyData]);
   return (
     <SafeAreaView style={{ flex: 1 }}>
@@ -153,6 +152,14 @@ function Make({ DATA, navigation }) {
             } else if (item.class === "checksquareo") {
               return (
                 <MultyChoice
+                  index={index}
+                  data={surveyData}
+                  writeSurvey={writeSurvey}
+                />
+              );
+            } else if (item.class === "checkcircleo") {
+              return (
+                <Step
                   index={index}
                   data={surveyData}
                   writeSurvey={writeSurvey}

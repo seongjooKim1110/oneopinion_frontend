@@ -1,16 +1,29 @@
 import React, { useState, useEffect } from "react";
 import { Alert } from "react-native";
+import ModalSelector from "react-native-modal-selector";
 import styled from "styled-components";
 import AnswerInput from "../../AnswerInput";
+import { ENDDATA } from "../../../DATA";
 
 const TitleInput = styled.TextInput`
   border-bottom-width: 0.5px;
   border-color: #797171;
   border-style: solid;
 `;
-const Text = styled.Text``;
+const Text = styled.Text`
+  margin-right: 5px;
+`;
+const StepText = styled.Text`
+  width: 20px;
+  color: #797171;
+`;
 const View = styled.View`
   margin-top: 10px;
+`;
+const FlexView = styled.View`
+  margin-top: 10px;
+  flex-direction: row;
+  align-items: center;
 `;
 const SqureBox = styled.View`
   border: 1px solid;
@@ -23,12 +36,11 @@ const AnsView = styled.View`
   flex-direction: row;
   align-items: center;
 `;
-const Circle = styled.View`
-  width: 15px;
-  height: 15px;
-  border-radius: 15px;
-  border: 1px solid black;
-  margin-right: 6px;
+const StartView = styled.View`
+  width: 30px;
+  height: 36px;
+  justify-content: center;
+  align-items: center;
 `;
 
 const RequireText = styled.Text``;
@@ -55,10 +67,7 @@ const RedText = styled.Text`
 `;
 
 function OneChoice({ index, writeSurvey, data }) {
-  // const [answerSet, setAnswerSet] = useState(data.answer);
-  // const [isRequire, setIsRequire] = useState(data.isRequire);
   const [dataSet, setDataSet] = useState(data[index]);
-  const [isModify, setIsModify] = useState(true);
 
   function setRequire() {
     dataSet.isRequire = !dataSet.isRequire;
@@ -86,8 +95,8 @@ function OneChoice({ index, writeSurvey, data }) {
     setDataSet({ ...dataSet });
   }
 
-  function addAnswer() {
-    dataSet.answer.push("");
+  function setEndValue(e) {
+    dataSet.end = e;
     setDataSet({ ...dataSet });
   }
 
@@ -113,22 +122,40 @@ function OneChoice({ index, writeSurvey, data }) {
         value={dataSet.title}
         onChangeText={onChangeTitlt}
       />
-      {dataSet.answer.map((el, answerIndex) => {
-        console.log("el is ", el);
-        return (
-          <AnsView key={answerIndex}>
-            <Circle />
-            <AnswerInput
-              answerIndex={answerIndex}
-              value={el}
-              onChange={onChangeAnswer}
-            />
-          </AnsView>
-        );
-      })}
-      <TouchableOpacity onPress={addAnswer}>
-        <Text>+ 답변 추가하기</Text>
-      </TouchableOpacity>
+      <FlexView>
+        <StartView>
+          <Text>1</Text>
+        </StartView>
+        <Text> ~ </Text>
+        <ModalSelector
+          selectStyle={{
+            marginLeft: 5,
+            width: 36,
+            height: 36,
+            borderColor: "black"
+          }}
+          data={ENDDATA}
+          initValue={"10"}
+          onChange={option => setEndValue(option.label)}
+          style={{ marginRight: 10 }}
+        />
+      </FlexView>
+
+      {dataSet.answer.map((el, answerIndex) => (
+        <AnsView key={answerIndex}>
+          {answerIndex === 0 ? (
+            <StepText>1</StepText>
+          ) : (
+            <StepText>{dataSet.end}</StepText>
+          )}
+          <AnswerInput
+            answerIndex={answerIndex}
+            value={el}
+            onChange={onChangeAnswer}
+          />
+        </AnsView>
+      ))}
+
       <TouchableOpacity onPress={deleteQuest}>
         <DeleteBox>
           <RedText>질문 삭제하기</RedText>
