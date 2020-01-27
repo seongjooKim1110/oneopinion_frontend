@@ -5,7 +5,7 @@ import constans from "../../constans";
 import Icon from "../../components/Icon";
 import {
   GridChoice,
-  MultChoice,
+  MultyChoice,
   OneChoice,
   ShortAnswer,
   Step
@@ -103,9 +103,10 @@ function Make({ DATA, navigation }) {
 
   useEffect(() => {
     navigation.setParams({ data: surveyData });
+    console.log(surveyData);
   }, [surveyData]);
   return (
-    <View>
+    <SafeAreaView style={{ flex: 1 }}>
       <AddSurveyBtn>
         <AddSurveyBorder onPress={pressBtn}>
           <BtnText>{isMakeSurvey ? "취소" : "조사 추가"}</BtnText>
@@ -149,11 +150,19 @@ function Make({ DATA, navigation }) {
                   writeSurvey={writeSurvey}
                 />
               );
+            } else if (item.class === "checksquareo") {
+              return (
+                <MultyChoice
+                  index={index}
+                  data={surveyData}
+                  writeSurvey={writeSurvey}
+                />
+              );
             }
           }
         }}
       />
-    </View>
+    </SafeAreaView>
   );
 }
 

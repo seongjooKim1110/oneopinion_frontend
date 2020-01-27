@@ -10,7 +10,6 @@ const Icons = ({
   design = "ion",
   style
 }) => {
-  console.log(size);
   if (focused) {
     color = "white";
   }
