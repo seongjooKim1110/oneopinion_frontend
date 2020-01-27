@@ -1,10 +1,10 @@
 export const firebaseConfig  = {
-    apiKey: "AIzaSyDH1ccwuvdLdGHCNnhr6HyA7hCStKMmrss",
-    authDomain: "testoneop-d8102.firebaseapp.com",
-    databaseURL: "https://testoneop-d8102.firebaseio.com",
-    projectId: "testoneop-d8102",
-    storageBucket: "testoneop-d8102.appspot.com",
-    messagingSenderId: "442810321009",
-    appId: "1:442810321009:web:a8757996025f054fe7b3d0",
-    measurementId: "G-0RKBZYZZ54"
+  apiKey: "AIzaSyBG3KgPbD-jl6xIeaB-9cW36D4dJdnMYxA",
+  authDomain: "oneopinion-6df14.firebaseapp.com",
+  databaseURL: "https://oneopinion-6df14.firebaseio.com",
+  projectId: "oneopinion-6df14",
+  storageBucket: "oneopinion-6df14.appspot.com",
+  messagingSenderId: "386017314845",
+  appId: "1:386017314845:web:3bbd36e38d73ded6135ef4",
+  measurementId: "G-4RYP2ESTG1"
   };

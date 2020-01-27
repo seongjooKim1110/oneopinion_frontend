@@ -6,7 +6,13 @@ import { useLogIn } from "../../AuthContext";
 
 import * as Google from "expo-google-app-auth";
 
-import firebase from "firebase";
+//firebase moduel
+import * as firebase from "firebase";
+import "firebase/firestore";
+// Initialize Firebase
+import { firebaseConfig } from "../../config";
+firebase.initializeApp(firebaseConfig);
+
 const Wrapper = styled.View`
   flex: 1;
   background-color: rgba(87, 66, 46, 0.5);
@@ -28,35 +34,45 @@ const LogInText = styled.Text`
 `;
 
 const onSignIn = async googleUser => {
-  let isUserEqual;
-  console.log("Google Auth Response");
+  let isUserEqual = false;
+  console.log(googleUser);
   try {
     isUserEqual = await axios.post(
-      "https://hidden-stream-28896.herokuapp.com/login",
+      "https://hidden-stream-28896.herokuapp.com/user/login",
       googleUser
     );
+    console.log("is user equal", isUserEqual);
   } catch (error) {
-    console.log(error);
+    console.log("has error", error);
     return false;
   }
-  if (!isUserEqual.data.token) {
-    try {
-      const credential = firebase.auth.GoogleAuthProvider.credential(
-        googleUser.idToken,
-        googleUser.accessToken
-      );
-      await firebase.auth().signInWithCredential(credential);
-      return true;
-    } catch (error) {
-      console.log(error);
-      var errorCode = error.code;
-      var errorMessage = error.message;
-      var email = error.email;
-      var credential = error.credential;
-      return false;
-    }
+
+  // Check if we are already signed-in Firebase with the correct user.
+  if (!isUserEqual) {
+    // Build Firebase credential with the Google ID token.
+    var credential = firebase.auth.GoogleAuthProvider.credential(
+      googleUser.idToken,
+      googleUser.accessToken
+    );
+
+    firebase
+      .auth()
+      .signInWithCredential(credential)
+      .then(function() {
+        console.log("user signed in ");
+      })
+      .catch(function(error) {
+        // Handle Errors here.
+        var errorCode = error.code;
+        var errorMessage = error.message;
+
+        var email = error.email;
+
+        var credential = error.credential;
+      });
+  } else {
+    console.log("User already signed-in Firebase.");
   }
-  return false;
 };
 
 function AuthHome({ navigation }) {
@@ -68,9 +84,10 @@ function AuthHome({ navigation }) {
   const pressGoogle = async () => {
     try {
       const result = await Google.logInAsync({
+        iosClientId:
+          "386017314845-24dah7plh63vhalgk93h3o3p5vrssnb3.apps.googleusercontent.com",
         androidClientId:
-          "442810321009-hb8j0tud7862iu70rr6eh5f5v5jpsae8.apps.googleusercontent.com",
-        //    iosClientId:"YOUR_iOS_CLIENT_ID",
+          "386017314845-v2tkp0rcjgg70tvuqrj2lor2cu5305p0.apps.googleusercontent.com",
         scopes: ["profile", "email"]
       });
 

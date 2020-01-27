@@ -1,13 +1,14 @@
-import React from "react";
 import { createAppContainer } from "react-navigation";
 import { createStackNavigator } from "react-navigation-stack";
 import AuthHome from "../screens/Auth/AuthHome";
-import SignIn from "../screens/Auth/AuthSignIn";
+import BeforeSign from "../screens/Auth/BeforeSign";
+import AuthSignIn from "../screens/Auth/AuthSignIn";
 
 const AuthNavigation = createStackNavigator(
   {
-    SignIn,
-    AuthHome
+    AuthHome,
+    BeforeSign,
+    AuthSignIn
   },
   {
     headerMode: "none"

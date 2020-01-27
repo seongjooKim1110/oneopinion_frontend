@@ -1,8 +1,15 @@
 import React from "react";
-import { Ionicons } from "@expo/vector-icons";
+import { Ionicons, AntDesign } from "@expo/vector-icons";
 import { Platform } from "@unimodules/core";
 
-const Icons = ({ name, size = "md", color = "black", focused = false }) => {
+const Icons = ({
+  name,
+  size = "md",
+  color = "black",
+  focused = false,
+  design = "ion",
+  style
+}) => {
   if (focused) {
     color = "white";
   }
@@ -13,14 +20,27 @@ const Icons = ({ name, size = "md", color = "black", focused = false }) => {
   } else if (Platform.OS === "android") {
     os = "md";
   }
-  if (size === "sm") {
+  if (typeof size === "number") {
+    iconSize = size;
+  } else if (size === "sm") {
     iconSize = 24;
   } else if (size === "md") {
     iconSize = 32;
   } else {
     iconSize = 40;
   }
-  return <Ionicons name={`${os}-${name}`} size={iconSize} color={color} />;
+  if (design === "ion") {
+    return (
+      <Ionicons
+        name={`${os}-${name}`}
+        size={iconSize}
+        color={color}
+        style={style}
+      />
+    );
+  } else if (design === "ant") {
+    return <AntDesign name={name} style={style} size={iconSize} />;
+  }
 };
 
 export default Icons;

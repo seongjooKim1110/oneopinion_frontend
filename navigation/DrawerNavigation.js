@@ -2,7 +2,6 @@ import React from "react";
 import { createAppContainer } from "react-navigation";
 import { createDrawerNavigator } from "react-navigation-drawer";
 import { createBottomTabNavigator } from "react-navigation-tabs";
-import { View } from "react-navigation";
 import Home from "../screens/Category/Home";
 import Culture from "../screens/Category/Culture";
 import Politics from "../screens/Category/Politics";

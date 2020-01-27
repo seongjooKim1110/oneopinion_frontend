@@ -3,6 +3,7 @@ import styled from "styled-components";
 
 const TouchableOpacity = styled.TouchableOpacity`
   flex-direction: row;
+  width: 55px;
 `;
 
 const H5 = styled.Text`
