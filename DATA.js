@@ -294,7 +294,6 @@ export const streetData = [
 ];
 
 export const ENDDATA = [
-  { key: 0, section: true, label: "끝" },
   { key: 2, label: 2 },
   { key: 3, label: 3 },
   { key: 4, label: 4 },
