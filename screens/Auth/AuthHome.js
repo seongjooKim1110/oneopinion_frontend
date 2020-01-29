@@ -3,15 +3,11 @@ import styled from "styled-components";
 import axios from "axios";
 import AuthButton from "../../components/AuthButton";
 import { useLogIn } from "../../AuthContext";
-
 import * as Google from "expo-google-app-auth";
-
 //firebase moduel
-import * as firebase from "firebase";
-import "firebase/firestore";
-// Initialize Firebase
-import { firebaseConfig } from "../../config";
-firebase.initializeApp(firebaseConfig);
+import firebase from "../../firebase";
+
+const db = firebase.firestore();
 
 const Wrapper = styled.View`
   flex: 1;
@@ -33,54 +29,45 @@ const LogInText = styled.Text`
   font-weight: 700;
 `;
 
-const onSignIn = async googleUser => {
-  let isUserEqual = false;
-  console.log(googleUser);
+const onSignIn = async (googleUser, URL) => {
+  // let isUserEqual = false;
+  // console.log(googleUser);
+  // try {
+  //   const result = await db
+  //     .collection("users")
+  //     .doc(googleUser.user.email)
+  //     .get();
+  //   if(result.exists) {
+
+  //   } else {
+
+  //   }
+  // } catch (error) {
+  //   console.log("has error", error);
+  //   return false;
+  // }
+  const credential = await firebase.auth.GoogleAuthProvider.credential(
+    googleUser.idToken,
+    googleUser.accessToken
+  );
   try {
-    isUserEqual = await axios.post(
-      "https://hidden-stream-28896.herokuapp.com/user/login",
-      googleUser
-    );
-    console.log("is user equal", isUserEqual);
+    const {
+      user: { uid }
+    } = await firebase.auth().signInWithCredential(credential);
+    const { exists, data } = await db
+      .collection("users")
+      .doc(uid)
+      .get();
+    return { exists, uid };
   } catch (error) {
-    console.log("has error", error);
-    return false;
-  }
-
-  // Check if we are already signed-in Firebase with the correct user.
-  if (!isUserEqual) {
-    // Build Firebase credential with the Google ID token.
-    var credential = firebase.auth.GoogleAuthProvider.credential(
-      googleUser.idToken,
-      googleUser.accessToken
-    );
-
-    firebase
-      .auth()
-      .signInWithCredential(credential)
-      .then(function() {
-        console.log("user signed in ");
-      })
-      .catch(function(error) {
-        // Handle Errors here.
-        var errorCode = error.code;
-        var errorMessage = error.message;
-
-        var email = error.email;
-
-        var credential = error.credential;
-      });
-  } else {
-    console.log("User already signed-in Firebase.");
+    console.log(error);
   }
 };
 
 function AuthHome({ navigation }) {
   const [logInTool, setLogInTool] = useState(null);
   const logIn = useLogIn();
-  const pressNaver = () => {
-    logIn("1234");
-  };
+  const pressNaver = async () => {};
   const pressGoogle = async () => {
     try {
       const result = await Google.logInAsync({
@@ -92,9 +79,14 @@ function AuthHome({ navigation }) {
       });
 
       if (result.type === "success") {
-        const onSignInResult = await onSignIn(result);
-        console.log(onSignInResult);
-        navigation.navigate("SignIn");
+        const { exists, uid } = await onSignIn(result);
+        console.log(exists, uid);
+        if (exists) {
+          logIn(uid);
+        } else {
+          navigation.navigate("BeforeSign", { uid });
+        }
+
         return result.accessToken;
       } else {
         return { cancelled: true };
@@ -104,7 +96,9 @@ function AuthHome({ navigation }) {
     }
   };
 
-  const pressFacebook = () => {};
+  const pressFacebook = () => {
+    navigation.navigate("BeforeSign");
+  };
   return (
     <Wrapper>
       <TextWrapper>

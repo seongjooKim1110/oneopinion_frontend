@@ -15,7 +15,7 @@ export default function App() {
       await Font.loadAsync({
         Roboto: require("./assets/Roboto/Roboto-Regular.ttf")
       });
-      AsyncStorage.clear();
+      await AsyncStorage.clear();
       const isLoggedIn = await AsyncStorage.getItem("isLoggedIn");
       if (isLoggedIn === null || isLoggedIn === "false") {
         setIsLoggedIn(false);

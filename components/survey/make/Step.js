@@ -50,6 +50,7 @@ const IsRequire = styled.TouchableOpacity`
 `;
 
 const TouchableOpacity = styled.TouchableOpacity`
+  width: 100px;
   margin-top: 10;
 `;
 
@@ -103,7 +104,6 @@ function OneChoice({ index, writeSurvey, data }) {
   useEffect(() => {
     writeSurvey(index, dataSet, "WRITE");
     dataSet.answer = dataSet.answer.slice();
-    console.log("change data set, and data answer set");
   }, [dataSet]);
 
   useEffect(() => {
@@ -130,14 +130,13 @@ function OneChoice({ index, writeSurvey, data }) {
         <ModalSelector
           selectStyle={{
             marginLeft: 5,
-            width: 36,
-            height: 36,
+            width: 40,
+            height: 40,
             borderColor: "black"
           }}
           data={ENDDATA}
           initValue={"10"}
           onChange={option => setEndValue(option.label)}
-          style={{ marginRight: 10 }}
         />
       </FlexView>
 

@@ -38,6 +38,7 @@ const IsRequire = styled.TouchableOpacity`
 `;
 
 const TouchableOpacity = styled.TouchableOpacity`
+  width: 100px;
   margin-top: 10;
 `;
 

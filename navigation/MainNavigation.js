@@ -5,8 +5,8 @@ import SurveyNavigation from "./SurveyNavigation";
 
 const TestMain = createStackNavigator(
   {
-    SurveyNavigation,
-    DrawerNavigation
+    DrawerNavigation,
+    SurveyNavigation
   },
   {
     headerMode: "none"

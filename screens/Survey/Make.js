@@ -48,8 +48,7 @@ const KindOfSurveyBox = styled.TouchableOpacity`
   align-items: center;
   background: #c4c4c4;
   width: 170px;
-  height: 30px;
-  padding: 0px;
+  height: 32px;
 `;
 
 const PositingBtnView = styled.View`

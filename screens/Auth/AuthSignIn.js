@@ -6,6 +6,9 @@ import axios from "axios";
 import useInput from "../../components/hooks/useInput";
 import { cityData, streetData } from "../../DATA";
 import Icon from "../../components/Icon";
+import { useLogIn } from "../../AuthContext";
+import firebase from "../../firebase";
+const db = firebase.firestore();
 
 const SafeAreaView = styled.SafeAreaView`
   padding-top: ${Platform.OS === "android" ? StatusBar.currentHeight : 0};
@@ -97,16 +100,17 @@ const SendData = styled.TouchableOpacity`
 
 const Text = styled.Text``;
 
-function AuthSignIn() {
-  const year = useInput("");
-  const month = useInput("");
-  const day = useInput("");
+function AuthSignIn({ navigation }) {
+  const year = useInput("1234");
+  const month = useInput("12");
+  const day = useInput("12");
   const [city, setCity] = useState("");
   const [street, setStreet] = useState("");
-  const [sex, setSex] = useState("");
-  const job = useInput("");
+  const [sex, setSex] = useState("남");
+  const job = useInput("학생");
   const [agree, setAgree] = useState(false);
-
+  const login = useLogIn();
+  const uid = navigation.getParam("uid");
   async function sendData() {
     if (year.value === "" || month.value === "" || day.value === "") {
       alert("생년,월,일 을 작성해주세요");
@@ -120,8 +124,19 @@ function AuthSignIn() {
       alert("약관에 동의해주세요");
     } else {
       try {
-      } catch (e) {
-        console.log(e);
+        const user = await db.collection("users").doc(uid);
+        user.set({
+          year: year.value,
+          month: month.value,
+          day: day.value,
+          city: cityData[city].label,
+          street: streetData[city - 1][street].label,
+          sex,
+          job: job.value
+        });
+        login(uid);
+      } catch (error) {
+        console.log(error);
       }
       console.log(
         year.value,
@@ -171,8 +186,8 @@ function AuthSignIn() {
         <ModalSelector
           data={[
             { key: 0, section: true, label: "성별" },
-            { key: 1, label: "남" },
-            { key: 2, label: "여" }
+            { key: "M", label: "남" },
+            { key: "F", label: "여" }
           ]}
           initValue="성별"
           onChange={option => setSex(option.key)}

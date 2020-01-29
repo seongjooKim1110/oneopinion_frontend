@@ -7,6 +7,24 @@ import SurveyController from "../screens/Survey/Controll";
 import { TouchableOpacity } from "react-native-gesture-handler";
 
 const SurveyNavigation = createStackNavigator({
+  Survey: {
+    screen: Survey,
+    navigationOptions: ({ navigation }) => ({
+      title: "설문조사 만들기",
+      headerLeft: (
+        <TouchableOpacity onPress={() => navigation.goBack(null)}>
+          <Text>뒤로가기</Text>
+        </TouchableOpacity>
+      ),
+      headerRight: (
+        <TouchableOpacity
+          onPress={() => navigation.navigate("SurveyController")}
+        >
+          <Text>설문조사</Text>
+        </TouchableOpacity>
+      )
+    })
+  },
   SurveyController: {
     screen: SurveyController,
     navigationOptions: ({ navigation }) => ({
@@ -20,23 +38,6 @@ const SurveyNavigation = createStackNavigator({
           }
         >
           <Text>뒤로가기</Text>
-        </TouchableOpacity>
-      )
-    })
-  },
-
-  Survey: {
-    screen: Survey,
-    navigationOptions: ({ navigation }) => ({
-      title: "설문조사 만들기",
-      headerLeft: (
-        <TouchableOpacity onPress={() => navigation.goBack(null)}>
-          <Text>뒤로가기</Text>
-        </TouchableOpacity>
-      ),
-      headerRight: (
-        <TouchableOpacity onPress={() => navigation.navigate("SurveyInit")}>
-          <Text>설문조사</Text>
         </TouchableOpacity>
       )
     })

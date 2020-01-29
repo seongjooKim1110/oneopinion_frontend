@@ -47,6 +47,8 @@ const Image = styled.Image`
 `;
 
 function BeforeSign({ navigation }) {
+  const uid = navigation.getParam("uid");
+  console.log(uid);
   return (
     <View>
       <TopLayout>
@@ -69,7 +71,7 @@ function BeforeSign({ navigation }) {
         <ButtonView>
           <Button
             title="다음"
-            onPress={() => navigation.navigate("AuthSignIn")}
+            onPress={() => navigation.navigate("AuthSignIn", { uid })}
           />
         </ButtonView>
       </BottomLayout>

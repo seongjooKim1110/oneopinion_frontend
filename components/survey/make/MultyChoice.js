@@ -37,6 +37,7 @@ const IsRequire = styled.TouchableOpacity`
 `;
 
 const TouchableOpacity = styled.TouchableOpacity`
+  width: 100px;
   margin-top: 10;
 `;
 
@@ -113,7 +114,6 @@ function OneChoice({ index, writeSurvey, data }) {
         onChangeText={onChangeTitlt}
       />
       {dataSet.answer.map((el, answerIndex) => {
-        console.log("el is ", el);
         return (
           <AnsView key={answerIndex}>
             <Squre />

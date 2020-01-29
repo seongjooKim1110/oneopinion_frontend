@@ -14,7 +14,7 @@ class Header extends React.Component {
     super(props);
     const { navigation } = props;
     this.state = {
-      isMakeInit: true,
+      isMakeInit: false,
       serveyProcedure: [],
       data: [
         {
